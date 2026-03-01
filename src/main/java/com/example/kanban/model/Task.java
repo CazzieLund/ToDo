@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "cards")
-public class Card {
+public class Task {
     
     /**
      * Primary key of the column.
@@ -27,9 +27,9 @@ public class Card {
     @JoinColumn(name = "column_id", nullable = false)
     private BoardColumn column;
 
-    public Card(){}
+    public Task(){}
     
-    public Card(String title, String description, BoardColumn column) {
+    public Task(String title, String description, BoardColumn column) {
         this.title = title;
         this.description = description;
         this.column = column;
