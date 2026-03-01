@@ -1,7 +1,5 @@
 package com.example.kanban.dto.column;
 
-import com.example.kanban.model.Board;
-
 public class ColumnResponse {
 
     private Long id;
