@@ -22,7 +22,7 @@ public class ColumnResponse {
         return name;
     }
 
-    public Long boardId() {
+    public Long getBoardId() {
         return boardId;
     }
 }
