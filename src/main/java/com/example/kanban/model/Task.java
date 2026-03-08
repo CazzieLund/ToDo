@@ -17,7 +17,7 @@ public class Task {
     @NotBlank
     @Size(max = 120)
     @Column(nullable = false, length = 120)
-    private String title;
+    private String name;
 
     @Size(max = 2000)
     @Column(length = 2000)
@@ -29,8 +29,8 @@ public class Task {
 
     public Task(){}
     
-    public Task(String title, String description, BoardColumn column) {
-        this.title = title;
+    public Task(String name, String description, BoardColumn column) {
+        this.name = name;
         this.description = description;
         this.column = column;
     }
@@ -39,12 +39,12 @@ public class Task {
         return id;
     }
 
-    public String getTitle(){
-        return title;
+    public String getName(){
+        return name;
     }
 
-    public void setTitel(String title){
-        this.title = title;
+    public void setTitel(String name){
+        this.name = name;
     }
 
     public String getDescription() {
