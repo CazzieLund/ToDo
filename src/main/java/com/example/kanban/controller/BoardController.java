@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.kanban.dto.board.BoardResponse;
+import com.example.kanban.dto.board.CreateBoardRequest;
+import com.example.kanban.dto.board.UpdateBoardRequest;
 import com.example.kanban.service.BoardService;
 
 @RestController
@@ -20,6 +22,16 @@ public class BoardController {
     @GetMapping
     public List<BoardResponse> getAllBoards() {
         return boardService.getAllBoards();
+    }
+
+    @PostMapping
+    public BoardResponse createBoard(@RequestBody CreateBoardRequest request) {
+        return boardService.createBoard(request);
+    }
+
+    @PutMapping("/{id}")
+    public BoardResponse updateBoard(Long id, @RequestBody UpdateBoardRequest request) {
+        return boardService.updateBoard(id, request);
     }
 
 }

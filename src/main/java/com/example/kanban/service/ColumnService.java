@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.kanban.dto.board.BoardResponse;
 import com.example.kanban.dto.column.ColumnResponse;
 import com.example.kanban.dto.column.CreateColumnRequest;
 import com.example.kanban.model.BoardColumn;
