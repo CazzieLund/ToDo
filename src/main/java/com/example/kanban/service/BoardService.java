@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.kanban.dto.board.BoardResponse;
 import com.example.kanban.dto.board.CreateBoardRequest;
+import com.example.kanban.dto.board.UpdateBoardRequest;
 import com.example.kanban.model.Board;
 import com.example.kanban.repository.BoardRepository;
 
@@ -44,6 +45,20 @@ public class BoardService {
         return new BoardResponse(
             saved.getId(),
             saved.getName()
+        );
+    }
+
+    public BoardResponse updateBoard(Long id, UpdateBoardRequest request) {
+        Board board = boardRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Board not found"));
+
+        board.setName(request.getName());
+
+        Board updated = boardRepository.save(board);
+
+        return new BoardResponse(
+            updated.getId(),
+            updated.getName()
         );
     }
 
