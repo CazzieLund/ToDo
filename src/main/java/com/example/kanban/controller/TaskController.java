@@ -39,4 +39,9 @@ public class TaskController {
     public TaskResponse updateTask(Long id, @RequestBody UpdateTaskRequest request) {
         return taskService.updateTask(id, request);
     }
+
+    @GetMapping("/{id}")
+    public List<TaskResponse> getTaskById(Long id) {
+        return taskService.getTaskById(id);
+    }
 }

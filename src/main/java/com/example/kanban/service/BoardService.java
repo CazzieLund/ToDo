@@ -62,4 +62,18 @@ public class BoardService {
         );
     }
 
+    @Transactional(readOnly = true)
+    public List<BoardResponse> getBoardsById(Long id) {
+        return boardRepository.findById(id)
+        .stream()
+        .map(board ->
+            new BoardResponse(
+                board.getId(),
+                board.getName()
+            )
+        )
+        .toList();
+    }
+ 
+
 }
