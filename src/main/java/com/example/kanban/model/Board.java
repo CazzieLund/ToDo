@@ -9,6 +9,7 @@ import jakarta.persistence.*;
  * entity in the Kanban domain model.
  */
 @Entity
+@Table(name = "board")
 public class Board {
 
     /**
