@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.kanban.dto.column.ColumnResponse;
-import com.example.kanban.dto.column.UpdateColumnRequest;
 import com.example.kanban.dto.task.CreateTaskRequest;
 import com.example.kanban.dto.task.TaskResponse;
 import com.example.kanban.dto.task.UpdateTaskRequest;
