@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.kanban.dto.column.ColumnResponse;
+import com.example.kanban.dto.column.UpdateColumnRequest;
 import com.example.kanban.dto.task.CreateTaskRequest;
 import com.example.kanban.dto.task.TaskResponse;
+import com.example.kanban.dto.task.UpdateTaskRequest;
 import com.example.kanban.model.BoardColumn;
 import com.example.kanban.model.Task;
 import com.example.kanban.repository.ColumnRepository;
@@ -55,6 +58,22 @@ public class TaskService {
             saved.getName(),
             saved.getDescription(),
             saved.getColumn().getId()
+        );
+    }
+
+    public TaskResponse updateTask(Long id, UpdateTaskRequest request) {
+        Task task = taskRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        task.setName(request.getName());
+
+        Task updated = taskRepository.save(task);
+
+        return new TaskResponse(
+            updated.getId(),
+            updated.getName(),
+            updated.getDescription(),
+            updated.getColumn().getId()
         );
     }
 }
