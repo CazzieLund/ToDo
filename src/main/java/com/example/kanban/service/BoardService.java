@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.kanban.dto.board.BoardDetailsResponse;
 import com.example.kanban.dto.board.BoardResponse;
 import com.example.kanban.dto.board.CreateBoardRequest;
 import com.example.kanban.dto.board.UpdateBoardRequest;
+import com.example.kanban.dto.column.ColumnWithTasksResponse;
+import com.example.kanban.dto.task.TaskSummaryResponse;
 import com.example.kanban.model.Board;
 import com.example.kanban.repository.BoardRepository;
 
@@ -74,6 +77,30 @@ public class BoardService {
         )
         .toList();
     }
+
+@Transactional(readOnly = true)
+public BoardDetailsResponse getBoardDetails(Long id) {
+    Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+    return new BoardDetailsResponse(
+            board.getId(),
+            board.getName(),
+            board.getColumns().stream()
+                    .map(column -> new ColumnWithTasksResponse(
+                            column.getId(),
+                            column.getName(),
+                            column.getTasks().stream()
+                                    .map(task -> new TaskSummaryResponse(
+                                            task.getId(),
+                                            task.getName(),
+                                            task.getDescription()
+                                    ))
+                                    .toList()
+                    ))
+                    .toList()
+    );
+}
  
 
 }
