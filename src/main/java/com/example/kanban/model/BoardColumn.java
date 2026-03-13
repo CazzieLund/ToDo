@@ -8,7 +8,7 @@ import jakarta.persistence.*;
  * Each column belongs to exactly one Board.
  */
 @Entity
-@Table(name = "board_columns") 
+@Table(name = "board_column") 
 public class BoardColumn {
     
     /**
