@@ -1,5 +1,9 @@
 package com.example.kanban.model;
 
+import java.util.ArrayList;
+
+import java.util.List;
+
 import jakarta.persistence.*;
 
 /**
@@ -27,10 +31,21 @@ public class Board {
     @Column(nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<BoardColumn> columns = new ArrayList<>();
+
     /**
      * Default constructor required by JPA.
      */
     public Board() {}
+
+    public List<BoardColumn> getColumns(){
+        return columns;
+    }
+
+    public void setColumn(List<BoardColumn> columns){
+        this.columns = columns;
+    }
 
     /**
      * Returns the board ID.
@@ -54,5 +69,8 @@ public class Board {
     public void setName(String name){
         this.name = name;
     }
+
+
     
+
 }
