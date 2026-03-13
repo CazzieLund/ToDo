@@ -34,4 +34,9 @@ public class ColumnController {
     public ColumnResponse updateColumn(Long id, @RequestBody UpdateColumnRequest request) {
         return columnService.updateColumn(id, request);
     }
+
+    @GetMapping("/{id}")
+    public List<ColumnResponse> getColumById(Long id) {
+        return columnService.getColumnById(id);
+    }
 }

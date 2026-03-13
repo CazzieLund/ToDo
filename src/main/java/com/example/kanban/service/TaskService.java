@@ -76,4 +76,19 @@ public class TaskService {
             updated.getColumn().getId()
         );
     }
+
+    @Transactional(readOnly = true)
+    public List<TaskResponse> getTaskById(Long id) {
+        return taskRepository.findById(id)
+        .stream()
+        .map(task ->
+            new TaskResponse(
+                task.getId(),
+                task.getName(),
+                task.getDescription(),
+                task.getColumn().getId()
+            )
+        )
+        .toList();
+    }
 }

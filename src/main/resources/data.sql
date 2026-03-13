@@ -1,3 +1,6 @@
+DELETE FROM task;
+DELETE FROM board_column;
+DELETE FROM board;
 
 INSERT INTO board (id, name) VALUES (1, 'Project Alpha');
 INSERT INTO board (id, name) VALUES (2, 'Website Redesign');

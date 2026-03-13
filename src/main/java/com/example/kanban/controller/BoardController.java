@@ -34,4 +34,9 @@ public class BoardController {
         return boardService.updateBoard(id, request);
     }
 
+    @GetMapping("/{id}")
+    public List<BoardResponse> getBoardById(Long id) {
+        return boardService.getBoardsById(id);
+    }
+
 }

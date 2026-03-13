@@ -72,5 +72,19 @@ public class ColumnService {
             updated.getBoard().getId()
         );
     }
+
+    @Transactional(readOnly = true)
+    public List<ColumnResponse> getColumnById(Long id) {
+        return columnRepository.findById(id)
+        .stream()
+        .map(column ->
+            new ColumnResponse(
+                column.getId(),
+                column.getName(),
+                column.getBoard().getId()
+            )
+        )
+        .toList();
+    }
     
 }
