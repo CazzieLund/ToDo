@@ -10,6 +10,7 @@ import com.example.kanban.dto.board.CreateBoardRequest;
 import com.example.kanban.dto.board.UpdateBoardRequest;
 import com.example.kanban.dto.column.ColumnWithTasksResponse;
 import com.example.kanban.dto.task.TaskSummaryResponse;
+import com.example.kanban.exception.BoardNotFoundException;
 import com.example.kanban.model.Board;
 import com.example.kanban.repository.BoardRepository;
 
@@ -60,16 +61,15 @@ public class BoardService {
                 updated.getName());
     }
 
-    @Transactional(readOnly = true)
     public BoardResponse getBoardById(Long id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+                .orElseThrow(() -> new BoardNotFoundException(id));
 
         return new BoardResponse(
                 board.getId(),
                 board.getName()
         );
-}
+    }
 
     @Transactional(readOnly = true)
     public BoardDetailsResponse getBoardDetails(Long id) {

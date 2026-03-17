@@ -31,13 +31,13 @@ public class BoardController {
     }
 
     @PutMapping("/{id}")
-    public BoardResponse updateBoard(Long id, @RequestBody UpdateBoardRequest request) {
+    public BoardResponse updateBoard(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
         return boardService.updateBoard(id, request);
     }
 
     @GetMapping("/{id}")
-    public List<BoardResponse> getBoardById(Long id) {
-        return boardService.getBoardsById(id);
+    public BoardResponse getBoardById(@PathVariable Long id) {
+        return boardService.getBoardById(id);
     }
 
     @GetMapping("/{id}/details")

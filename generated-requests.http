@@ -1,9 +1,9 @@
-### Get all boards!!
+### Get all boards
 GET http://localhost:8080/api/boards
 
 ###
 
-### Get board by id
+### Get board by id 
 GET http://localhost:8080/api/boards/1
 
 ###
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 ###
 
-### Update board !!
+### Update board 
 PUT http://localhost:8080/api/boards/1
 Content-Type: application/json
 
@@ -38,7 +38,7 @@ GET http://localhost:8080/api/column
 
 ###
 
-### Get column by id !!
+### Get column by id 
 GET http://localhost:8080/api/column/1
 
 ###
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 ###
 
-### Update column !!
+### Update column 
 PUT http://localhost:8080/api/column/1
 Content-Type: application/json
 
@@ -70,7 +70,7 @@ GET http://localhost:8080/api/tasks
 
 ###
 
-### Get task by id !!
+### Get task by id 
 GET http://localhost:8080/api/tasks/1
 
 ###

@@ -41,9 +41,10 @@ public class TaskService {
     }
 
     public TaskResponse createTask(CreateTaskRequest request) {
+        System.out.println("****columnId:" + request.getColumnId());
          BoardColumn column = columnRepository.findById(request.getColumnId())
             .orElseThrow(() -> new RuntimeException("Column not found"));
-
+        
         Task task = new Task();
         task.setName(request.getName());
         task.setDescription(request.getDescription());
@@ -76,17 +77,16 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskResponse> getTaskById(Long id) {
-        return taskRepository.findById(id)
-        .stream()
-        .map(task ->
-            new TaskResponse(
+    public TaskResponse getTaskById(Long id) {
+
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        return new TaskResponse(
                 task.getId(),
                 task.getName(),
                 task.getDescription(),
                 task.getColumn().getId()
-            )
-        )
-        .toList();
+        );
     }
 }
