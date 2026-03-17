@@ -1,0 +1,100 @@
+### Get all boards!!
+GET http://localhost:8080/api/boards
+
+###
+
+### Get board by id
+GET http://localhost:8080/api/boards/1
+
+###
+
+### Get board details
+GET http://localhost:8080/api/boards/1/details
+
+###
+
+### Create board
+POST http://localhost:8080/api/boards
+Content-Type: application/json
+
+{
+  "name": "Website Redesign"
+}
+
+###
+
+### Update board !!
+PUT http://localhost:8080/api/boards/1
+Content-Type: application/json
+
+{
+  "name": "Website Redesign Updated"
+}
+
+###
+
+### Get all columns
+GET http://localhost:8080/api/column
+
+###
+
+### Get column by id !!
+GET http://localhost:8080/api/column/1
+
+###
+
+### Create column
+POST http://localhost:8080/api/column
+Content-Type: application/json
+
+{
+  "name": "Todo",
+  "boardId": 1
+}
+
+###
+
+### Update column !!
+PUT http://localhost:8080/api/column/1
+Content-Type: application/json
+
+{
+  "name": "In Progress",
+  "boardId": 1
+}
+
+###
+
+### Get all tasks
+GET http://localhost:8080/api/tasks
+
+###
+
+### Get task by id !!
+GET http://localhost:8080/api/tasks/1
+
+###
+
+### Create task !!
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "name": "Create wireframes",
+  "description": "Design the landing page",
+  "columnId": 1
+}
+
+###
+
+### Update task !!
+PUT http://localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "name": "Create wireframes updated",
+  "description": "Revise landing page draft",
+  "columnId": 2
+}
+
+###
