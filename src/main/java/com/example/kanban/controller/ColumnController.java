@@ -31,12 +31,12 @@ public class ColumnController {
     }
 
     @PutMapping("/{id}")
-    public ColumnResponse updateColumn(Long id, @RequestBody UpdateColumnRequest request) {
+    public ColumnResponse updateColumn(@PathVariable Long id, @RequestBody UpdateColumnRequest request) {
         return columnService.updateColumn(id, request);
     }
 
     @GetMapping("/{id}")
-    public List<ColumnResponse> getColumById(Long id) {
+    public List<ColumnResponse> getColumById(@PathVariable Long id) {
         return columnService.getColumnById(id);
     }
 }
