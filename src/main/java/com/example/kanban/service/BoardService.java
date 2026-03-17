@@ -28,14 +28,11 @@ public class BoardService {
     @Transactional(readOnly = true)
     public List<BoardResponse> getAllBoards() {
         return boardRepository.findAll()
-        .stream()
-        .map(board ->
-            new BoardResponse(
-                board.getId(),
-                board.getName()
-            )
-        )
-        .toList();
+                .stream()
+                .map(board -> new BoardResponse(
+                        board.getId(),
+                        board.getName()))
+                .toList();
     }
 
     public BoardResponse createBoard(CreateBoardRequest request) {
@@ -46,61 +43,53 @@ public class BoardService {
         Board saved = boardRepository.save(board);
 
         return new BoardResponse(
-            saved.getId(),
-            saved.getName()
-        );
+                saved.getId(),
+                saved.getName());
     }
 
     public BoardResponse updateBoard(Long id, UpdateBoardRequest request) {
         Board board = boardRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Board not found"));
+                .orElseThrow(() -> new RuntimeException("Board not found"));
 
         board.setName(request.getName());
 
         Board updated = boardRepository.save(board);
 
         return new BoardResponse(
-            updated.getId(),
-            updated.getName()
-        );
+                updated.getId(),
+                updated.getName());
     }
 
     @Transactional(readOnly = true)
-    public List<BoardResponse> getBoardsById(Long id) {
-        return boardRepository.findById(id)
-        .stream()
-        .map(board ->
-            new BoardResponse(
+    public BoardResponse getBoardById(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        return new BoardResponse(
                 board.getId(),
                 board.getName()
-            )
-        )
-        .toList();
-    }
-
-@Transactional(readOnly = true)
-public BoardDetailsResponse getBoardDetails(Long id) {
-    Board board = boardRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Board not found"));
-
-    return new BoardDetailsResponse(
-            board.getId(),
-            board.getName(),
-            board.getColumns().stream()
-                    .map(column -> new ColumnWithTasksResponse(
-                            column.getId(),
-                            column.getName(),
-                            column.getTasks().stream()
-                                    .map(task -> new TaskSummaryResponse(
-                                            task.getId(),
-                                            task.getName(),
-                                            task.getDescription()
-                                    ))
-                                    .toList()
-                    ))
-                    .toList()
-    );
+        );
 }
- 
+
+    @Transactional(readOnly = true)
+    public BoardDetailsResponse getBoardDetails(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        return new BoardDetailsResponse(
+                board.getId(),
+                board.getName(),
+                board.getColumns().stream()
+                        .map(column -> new ColumnWithTasksResponse(
+                                column.getId(),
+                                column.getName(),
+                                column.getTasks().stream()
+                                        .map(task -> new TaskSummaryResponse(
+                                                task.getId(),
+                                                task.getName(),
+                                                task.getDescription()))
+                                        .toList()))
+                        .toList());
+    }
 
 }
