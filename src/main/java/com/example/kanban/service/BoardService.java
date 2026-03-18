@@ -20,76 +20,82 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BoardService {
 
-    private final BoardRepository boardRepository;
+        private final BoardRepository boardRepository;
 
-    public BoardService(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
-    }
+        public BoardService(BoardRepository boardRepository) {
+                this.boardRepository = boardRepository;
+        }
 
-    @Transactional(readOnly = true)
-    public List<BoardResponse> getAllBoards() {
-        return boardRepository.findAll()
-                .stream()
-                .map(board -> new BoardResponse(
-                        board.getId(),
-                        board.getName()))
-                .toList();
-    }
+        @Transactional(readOnly = true)
+        public List<BoardResponse> getAllBoards() {
+                return boardRepository.findAll()
+                                .stream()
+                                .map(board -> new BoardResponse(
+                                                board.getId(),
+                                                board.getName()))
+                                .toList();
+        }
 
-    public BoardResponse createBoard(CreateBoardRequest request) {
+        public BoardResponse createBoard(CreateBoardRequest request) {
 
-        Board board = new Board();
-        board.setName(request.getName());
+                Board board = new Board();
+                board.setName(request.getName());
 
-        Board saved = boardRepository.save(board);
+                Board saved = boardRepository.save(board);
 
-        return new BoardResponse(
-                saved.getId(),
-                saved.getName());
-    }
+                return new BoardResponse(
+                                saved.getId(),
+                                saved.getName());
+        }
 
-    public BoardResponse updateBoard(Long id, UpdateBoardRequest request) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
+        public BoardResponse updateBoard(Long id, UpdateBoardRequest request) {
+                Board board = boardRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Board not found"));
 
-        board.setName(request.getName());
+                board.setName(request.getName());
 
-        Board updated = boardRepository.save(board);
+                Board updated = boardRepository.save(board);
 
-        return new BoardResponse(
-                updated.getId(),
-                updated.getName());
-    }
+                return new BoardResponse(
+                                updated.getId(),
+                                updated.getName());
+        }
 
-    public BoardResponse getBoardById(Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new BoardNotFoundException(id));
+        public BoardResponse getBoardById(Long id) {
+                Board board = boardRepository.findById(id)
+                                .orElseThrow(() -> new BoardNotFoundException(id));
 
-        return new BoardResponse(
-                board.getId(),
-                board.getName()
-        );
-    }
+                return new BoardResponse(
+                                board.getId(),
+                                board.getName());
+        }
 
-    @Transactional(readOnly = true)
-    public BoardDetailsResponse getBoardDetails(Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+        public void deleteBoard(Long id) {
+                Board board = boardRepository.findById(id)
+                                .orElseThrow(() -> new BoardNotFoundException(id));
 
-        return new BoardDetailsResponse(
-                board.getId(),
-                board.getName(),
-                board.getColumns().stream()
-                        .map(column -> new ColumnWithTasksResponse(
-                                column.getId(),
-                                column.getName(),
-                                column.getTasks().stream()
-                                        .map(task -> new TaskSummaryResponse(
-                                                task.getId(),
-                                                task.getName(),
-                                                task.getDescription()))
-                                        .toList()))
-                        .toList());
-    }
+                boardRepository.delete(board);
+        }
+
+        @Transactional(readOnly = true)
+        public BoardDetailsResponse getBoardDetails(Long id) {
+                Board board = boardRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+                return new BoardDetailsResponse(
+                                board.getId(),
+                                board.getName(),
+                                board.getColumns().stream()
+                                                .map(column -> new ColumnWithTasksResponse(
+                                                                column.getId(),
+                                                                column.getName(),
+                                                                column.getTasks().stream()
+                                                                                .map(task -> new TaskSummaryResponse(
+                                                                                                task.getId(),
+                                                                                                task.getName(),
+                                                                                                task.getDescription()))
+                                                                                .toList()))
+                                                .toList());
+        }
 
 }

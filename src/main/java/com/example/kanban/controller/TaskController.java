@@ -2,11 +2,14 @@ package com.example.kanban.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.kanban.dto.task.CreateTaskRequest;
@@ -30,7 +33,7 @@ public class TaskController {
     public List<TaskResponse> getAllTasks() {
         return taskService.getAllTasks();
     }
-    
+
     @PostMapping(consumes = "application/json")
     public TaskResponse createTask(@RequestBody CreateTaskRequest request) {
         System.out.println("name: " + request.getName());
@@ -43,6 +46,12 @@ public class TaskController {
     @PutMapping("/{id}")
     public TaskResponse updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
         return taskService.updateTask(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
     }
 
     @GetMapping("/{id}")

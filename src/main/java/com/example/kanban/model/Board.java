@@ -39,6 +39,11 @@ public class Board {
      */
     public Board() {}
 
+    public Board(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public List<BoardColumn> getColumns(){
         return columns;
     }
