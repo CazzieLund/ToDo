@@ -2,6 +2,8 @@ package com.example.kanban.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.kanban.dto.board.BoardDetailsResponse;
@@ -9,6 +11,8 @@ import com.example.kanban.dto.board.BoardResponse;
 import com.example.kanban.dto.board.CreateBoardRequest;
 import com.example.kanban.dto.board.UpdateBoardRequest;
 import com.example.kanban.service.BoardService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -21,18 +25,25 @@ public class BoardController {
     }
 
     @GetMapping
-    public List<BoardResponse> getAllBoards() {
-        return boardService.getAllBoards();
+    public ResponseEntity<List<BoardResponse>> getAllBoards() {
+        return ResponseEntity.ok(boardService.getAllBoards());
     }
 
     @PostMapping
-    public BoardResponse createBoard(@RequestBody CreateBoardRequest request) {
-        return boardService.createBoard(request);
+    public ResponseEntity<BoardResponse> createBoard(@Valid @RequestBody CreateBoardRequest request) {
+        BoardResponse createdBoard = boardService.createBoard(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBoard);
     }
 
     @PutMapping("/{id}")
-    public BoardResponse updateBoard(@PathVariable Long id, @RequestBody UpdateBoardRequest request) {
+    public BoardResponse updateBoard(@PathVariable Long id, @Valid @RequestBody UpdateBoardRequest request) {
         return boardService.updateBoard(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBoard(@PathVariable Long id) {
+        boardService.deleteBoard(id);
     }
 
     @GetMapping("/{id}")

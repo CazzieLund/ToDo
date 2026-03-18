@@ -7,16 +7,18 @@ import org.springframework.stereotype.Service;
 import com.example.kanban.dto.task.CreateTaskRequest;
 import com.example.kanban.dto.task.TaskResponse;
 import com.example.kanban.dto.task.UpdateTaskRequest;
+import com.example.kanban.exception.TaskNotFoundException;
 import com.example.kanban.model.BoardColumn;
 import com.example.kanban.model.Task;
 import com.example.kanban.repository.ColumnRepository;
 import com.example.kanban.repository.TaskRepository;
 
 import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @Transactional
 public class TaskService {
-    
+
     private final TaskRepository taskRepository;
     private final ColumnRepository columnRepository;
 
@@ -28,23 +30,20 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<TaskResponse> getAllTasks() {
         return taskRepository.findAll()
-        .stream()
-        .map(task ->
-            new TaskResponse(
-                task.getId(),
-                task.getName(),
-                task.getDescription(),
-                task.getColumn().getId()
-            )
-        )
-        .toList();
+                .stream()
+                .map(task -> new TaskResponse(
+                        task.getId(),
+                        task.getName(),
+                        task.getDescription(),
+                        task.getColumn().getId()))
+                .toList();
     }
 
     public TaskResponse createTask(CreateTaskRequest request) {
         System.out.println("****columnId:" + request.getColumnId());
-         BoardColumn column = columnRepository.findById(request.getColumnId())
-            .orElseThrow(() -> new RuntimeException("Column not found"));
-        
+        BoardColumn column = columnRepository.findById(request.getColumnId())
+                .orElseThrow(() -> new RuntimeException("Column not found"));
+
         Task task = new Task();
         task.setName(request.getName());
         task.setDescription(request.getDescription());
@@ -53,27 +52,32 @@ public class TaskService {
         Task saved = taskRepository.save(task);
 
         return new TaskResponse(
-            saved.getId(),
-            saved.getName(),
-            saved.getDescription(),
-            saved.getColumn().getId()
-        );
+                saved.getId(),
+                saved.getName(),
+                saved.getDescription(),
+                saved.getColumn().getId());
     }
 
     public TaskResponse updateTask(Long id, UpdateTaskRequest request) {
         Task task = taskRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new RuntimeException("Task not found"));
 
         task.setName(request.getName());
 
         Task updated = taskRepository.save(task);
 
         return new TaskResponse(
-            updated.getId(),
-            updated.getName(),
-            updated.getDescription(),
-            updated.getColumn().getId()
-        );
+                updated.getId(),
+                updated.getName(),
+                updated.getDescription(),
+                updated.getColumn().getId());
+    }
+
+    public void deleteTask(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        taskRepository.delete(task);
     }
 
     @Transactional(readOnly = true)
@@ -86,7 +90,6 @@ public class TaskService {
                 task.getId(),
                 task.getName(),
                 task.getDescription(),
-                task.getColumn().getId()
-        );
+                task.getColumn().getId());
     }
 }

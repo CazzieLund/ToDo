@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.kanban.dto.column.UpdateColumnRequest;
 import com.example.kanban.exception.BoardNotFoundException;
+import com.example.kanban.exception.ColumnNotFoundException;
 import com.example.kanban.dto.column.ColumnResponse;
 import com.example.kanban.dto.column.CreateColumnRequest;
 import com.example.kanban.model.Board;
@@ -19,65 +20,72 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ColumnService {
 
-    private final ColumnRepository columnRepository;
-    private final BoardRepository boardRepository;
+        private final ColumnRepository columnRepository;
+        private final BoardRepository boardRepository;
 
-    public ColumnService(ColumnRepository columnRepository, BoardRepository boardRepository) {
-        this.columnRepository = columnRepository;
-        this.boardRepository = boardRepository;
-    }
+        public ColumnService(ColumnRepository columnRepository, BoardRepository boardRepository) {
+                this.columnRepository = columnRepository;
+                this.boardRepository = boardRepository;
+        }
 
-    @Transactional(readOnly = true)
-    public List<ColumnResponse> getAllColumns() {
-        return columnRepository.findAll()
-                .stream()
-                .map(column -> new ColumnResponse(
-                        column.getId(),
-                        column.getName(),
-                        column.getBoard().getId()))
-                .toList();
-    }
+        @Transactional(readOnly = true)
+        public List<ColumnResponse> getAllColumns() {
+                return columnRepository.findAll()
+                                .stream()
+                                .map(column -> new ColumnResponse(
+                                                column.getId(),
+                                                column.getName(),
+                                                column.getBoard().getId()))
+                                .toList();
+        }
 
-    public ColumnResponse createColumn(CreateColumnRequest request) {
+        public ColumnResponse createColumn(CreateColumnRequest request) {
 
-        Board board = boardRepository.findById(request.getBoardId())
-        .orElseThrow(() -> new BoardNotFoundException(request.getBoardId()));
-        
-        BoardColumn column = new BoardColumn();
-        column.setName(request.getName());
-        column.setBoard(board);
+                Board board = boardRepository.findById(request.getBoardId())
+                                .orElseThrow(() -> new BoardNotFoundException(request.getBoardId()));
 
-        BoardColumn saved = columnRepository.save(column);
+                BoardColumn column = new BoardColumn();
+                column.setName(request.getName());
+                column.setBoard(board);
 
-        return new ColumnResponse(
-                saved.getId(),
-                saved.getName(),
-                saved.getBoard().getId());
-    }
+                BoardColumn saved = columnRepository.save(column);
 
-    public ColumnResponse updateColumn(Long id, UpdateColumnRequest request) {
-        BoardColumn column = columnRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Column not found"));
+                return new ColumnResponse(
+                                saved.getId(),
+                                saved.getName(),
+                                saved.getBoard().getId());
+        }
 
-        column.setName(request.getName());
+        public ColumnResponse updateColumn(Long id, UpdateColumnRequest request) {
+                BoardColumn column = columnRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Column not found"));
 
-        BoardColumn updated = columnRepository.save(column);
+                column.setName(request.getName());
 
-        return new ColumnResponse(
-                updated.getId(),
-                updated.getName(),
-                updated.getBoard().getId());
-    }
+                BoardColumn updated = columnRepository.save(column);
 
-    @Transactional(readOnly = true)
-    public List<ColumnResponse> getColumnById(Long id) {
-        return columnRepository.findById(id)
-                .stream()
-                .map(column -> new ColumnResponse(
-                        column.getId(),
-                        column.getName(),
-                        column.getBoard().getId()))
-                .toList();
-    }
+                return new ColumnResponse(
+                                updated.getId(),
+                                updated.getName(),
+                                updated.getBoard().getId());
+        }
+
+        public void deleteColumn(Long id) {
+                BoardColumn column = columnRepository.findById(id)
+                                .orElseThrow(() -> new ColumnNotFoundException(id));
+
+                columnRepository.delete(column);
+        }
+
+        @Transactional(readOnly = true)
+        public List<ColumnResponse> getColumnById(Long id) {
+                return columnRepository.findById(id)
+                                .stream()
+                                .map(column -> new ColumnResponse(
+                                                column.getId(),
+                                                column.getName(),
+                                                column.getBoard().getId()))
+                                .toList();
+        }
 
 }
