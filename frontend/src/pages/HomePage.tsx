@@ -14,7 +14,7 @@ function HomePage() {
 
         fetchBoards();
     }, []);
-    
+
     return (
         <div>
             <h1>Kanban</h1>

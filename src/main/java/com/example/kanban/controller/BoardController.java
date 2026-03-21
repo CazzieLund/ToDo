@@ -14,6 +14,7 @@ import com.example.kanban.service.BoardService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:5174")
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
