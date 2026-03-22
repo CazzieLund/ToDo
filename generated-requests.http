@@ -103,3 +103,11 @@ Content-Type: application/json
 }
 
 ###
+
+### Move task to column
+PUT http://localhost:8080/api/tasks/1/move
+Content-Type: application/json
+
+{
+  "columnId": 2
+}
