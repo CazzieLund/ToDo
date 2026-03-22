@@ -43,6 +43,11 @@ GET http://localhost:8080/api/column/1
 
 ###
 
+### Get columns by board
+GET http://localhost:8080/api/column/boards/1/columns
+
+###
+
 ### Create column
 POST http://localhost:8080/api/column
 Content-Type: application/json
