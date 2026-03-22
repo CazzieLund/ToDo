@@ -46,4 +46,7 @@ public class ColumnController {
     public List<ColumnResponse> getColumById(@PathVariable Long id) {
         return columnService.getColumnById(id);
     }
+
+    @GetMapping("/boards/{boardId}/columns")
+    public List<ColumnResponse> getColumnsByBoard(@PathVariable Long boardId) { return columnService.getColumnByBoard(boardId);}
 }

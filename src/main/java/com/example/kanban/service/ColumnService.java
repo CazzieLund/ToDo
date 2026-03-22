@@ -88,4 +88,19 @@ public class ColumnService {
                                 .toList();
         }
 
+        public List<ColumnResponse> getColumnByBoard(Long boardId) {
+                boardRepository.findById(boardId)
+                        .orElseThrow(() -> new BoardNotFoundException(boardId));
+
+                List<BoardColumn> columns = columnRepository.findByBoardId(boardId);
+
+                return columns.stream()
+                        .map(column -> new ColumnResponse(
+                                column.getId(),
+                                column.getName(),
+                                column.getBoard().getId()
+                        ))
+                        .toList();
+        }
+
 }
