@@ -2,6 +2,7 @@ package com.example.kanban.service;
 
 import java.util.List;
 
+import com.example.kanban.dto.task.MoveTaskRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.kanban.dto.task.CreateTaskRequest;
@@ -91,5 +92,24 @@ public class TaskService {
                 task.getName(),
                 task.getDescription(),
                 task.getColumn().getId());
+    }
+
+    public TaskResponse moveTask(Long taskId, MoveTaskRequest request) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        BoardColumn targetColumn = columnRepository.findById(request.columnId())
+                .orElseThrow(() -> new RuntimeException("Column not found"));
+
+        task.setColumn(targetColumn);
+
+        Task savedTask = taskRepository.save(task);
+
+        return new TaskResponse(
+                savedTask.getId(),
+                savedTask.getName(),
+                savedTask.getDescription(),
+                task.getColumn().getId()
+        );
     }
 }

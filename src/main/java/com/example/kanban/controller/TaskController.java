@@ -2,6 +2,8 @@ package com.example.kanban.controller;
 
 import java.util.List;
 
+import com.example.kanban.dto.task.MoveTaskRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,5 +59,11 @@ public class TaskController {
     @GetMapping("/{id}")
     public TaskResponse getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
+    }
+
+    @PutMapping("/{taskId}/move")
+    public TaskResponse moveTask(@PathVariable Long taskId,
+                                 @Valid @RequestBody MoveTaskRequest request) {
+        return taskService.moveTask(taskId, request);
     }
 }
